@@ -327,9 +327,15 @@ module Fog
           }
 
           if options[:group].nil?
-            ip_permission['IpRanges'] = [
-              { 'CidrIp' => options[:cidr_ip] || '0.0.0.0/0' }
-            ]
+            if options[:cidr_ipv6].nil?
+              ip_permission['IpRanges'] = [
+                { 'CidrIp' => options[:cidr_ip] || '0.0.0.0/0' }
+              ]
+            else
+              ip_permission['Ipv6Ranges'] = [
+                { 'CidrIpv6' => options[:cidr_ipv6] }
+              ]
+            end
           else
             ip_permission['Groups'] = [
               group_info(options[:group])
